@@ -7,6 +7,7 @@ declare interface Ai {
 declare namespace Cloudflare {
   interface Env {
     AI: Ai;
+    ai_image_binding?: Ai;
   }
 }
 

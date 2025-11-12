@@ -32,7 +32,15 @@ app.post("/api/analyze", async (c) => {
       max_tokens: 256,
     };
 
-    const response = await c.env.AI.run(
+    const ai: any = (c.env as any).AI ?? (c.env as any).ai_image_binding;
+    if (!ai || typeof ai.run !== "function") {
+      return c.json(
+        { error: "Workers AI binding not configured (expected AI or ai_image_binding)" },
+        500,
+      );
+    }
+
+    const response = await ai.run(
       "@cf/unum/uform-gen2-qwen-500m",
       input,
     );
