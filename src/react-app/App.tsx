@@ -5,10 +5,6 @@ import * as Label from "@radix-ui/react-label";
 import * as RadioGroup from "@radix-ui/react-radio-group";
 import * as Select from "@radix-ui/react-select";
 import * as Checkbox from "@radix-ui/react-checkbox";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import cloudflareLogo from "./assets/Cloudflare_Logo.svg";
-import honoLogo from "./assets/hono.svg";
 import "./App.css";
 
 function App() {
