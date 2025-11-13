@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import "./App.css";
-import { Tabs, RadioGroup } from "radix-ui";
-import { SparklesIcon, CameraIcon } from "@radix-ui/react-icons";
+import * as Tabs from "@radix-ui/react-tabs";
+import * as RadioGroup from "@radix-ui/react-radio-group";
+import { MagicWandIcon, CameraIcon } from "@radix-ui/react-icons";
 
 export type AnalysisMode = "face" | "full-body";
 
@@ -106,7 +107,7 @@ const App: React.FC = () => {
       <main className="AppShell">
         <section>
           <div className="AppHeroHighlight">
-            <SparklesIcon width={14} height={14} />
+            <MagicWandIcon width={14} height={14} />
             Gentle appearance coaching — AI-assisted
           </div>
           <h1 className="AppHeroTitle">

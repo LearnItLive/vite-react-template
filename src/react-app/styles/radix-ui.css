@@ -4,6 +4,7 @@
   --app-card-soft: #101832;
   --app-border-subtle: #222c4a;
   --app-accent: #7c5cff;
+  --app-accent-2: #60a5fa;
   --app-accent-soft: rgba(124, 92, 255, 0.16);
   --app-text-main: #f9fafb;
   --app-text-muted: #9ca3af;
@@ -21,7 +22,7 @@ body {
   min-height: 100vh;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
     "Segoe UI", sans-serif;
-  background: radial-gradient(circle at top left, #1f2937 0, #020617 45%);
+  background: radial-gradient(1200px circle at 10% -10%, #0b1221 0, #020617 45%);
   color: var(--app-text-main);
 }
 
@@ -37,9 +38,9 @@ body {
 .AppShell {
   width: 100%;
   max-width: 1120px;
-  background: linear-gradient(145deg, #020617, #020617 62%, #050816);
+  background: linear-gradient(145deg, #020617, #03091a 62%, #050816);
   border-radius: 28px;
-  border: 1px solid rgba(148, 163, 184, 0.20);
+  border: 1px solid rgba(148, 163, 184, 0.22);
   box-shadow: var(--shadow-soft);
   padding: 28px 28px 24px;
   box-sizing: border-box;
@@ -70,7 +71,7 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.12em;
   background: var(--app-accent-soft);
-  border: 1px solid rgba(124, 92, 255, 0.5);
+  border: 1px solid rgba(124, 92, 255, 0.55);
   color: #e5e7eb;
   margin-bottom: 14px;
   gap: 6px;
@@ -112,7 +113,7 @@ body {
 }
 
 .Card {
-  background: radial-gradient(circle at top, #020617, #020617 50%, #020617);
+  background: radial-gradient(700px circle at 0% -20%, #0a1124 0, #020617 50%, #020617);
   border-radius: var(--radius-lg);
   border: 1px solid var(--app-border-subtle);
   box-shadow: var(--shadow-subtle);
@@ -192,12 +193,12 @@ body {
   padding: 8px 14px;
   border-radius: 999px;
   border: none;
-  background: linear-gradient(135deg, var(--app-accent), #22c55e);
+  background: linear-gradient(135deg, var(--app-accent), var(--app-accent-2));
   color: white;
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  box-shadow: 0 10px 30px rgba(46, 144, 255, 0.40);
+  box-shadow: 0 10px 30px rgba(124, 92, 255, 0.35);
   transition: transform var(--transition-fast),
     box-shadow var(--transition-fast), filter var(--transition-fast);
 }
