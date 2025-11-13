@@ -17,7 +17,7 @@ app.post("/api/analyze", async (c) => {
 
     if (contentType.includes("multipart/form-data")) {
       const formData = await c.req.formData();
-      const file = formData.get("file");
+      const file = (formData.get("file") as File) || (formData.get("image") as File);
       if (!file || !(file instanceof File)) {
         return c.json({ error: "Missing 'file' in form-data" }, 400);
       }
@@ -25,7 +25,14 @@ app.post("/api/analyze", async (c) => {
       bytes = [...new Uint8Array(arrayBuffer)];
 
       photoType = (formData.get("photoType") as string) || photoType;
-      ageGroup = (formData.get("ageGroup") as string) || ageGroup;
+      // Accept alternate fields per new UI
+      const mode = (formData.get("mode") as string) || "";
+      if (mode === "full-body") photoType = "full";
+      if (mode === "face") photoType = "face";
+      ageGroup =
+        (formData.get("ageGroup") as string) ||
+        (formData.get("ageRange") as string) ||
+        ageGroup;
       gender = (formData.get("gender") as string) || gender;
       try {
         const fa = formData.get("focusAreas") as string | null;

@@ -1,0 +1,391 @@
+:root {
+  --app-bg: #050816;
+  --app-card: #0b1020;
+  --app-card-soft: #101832;
+  --app-border-subtle: #222c4a;
+  --app-accent: #7c5cff;
+  --app-accent-soft: rgba(124, 92, 255, 0.16);
+  --app-text-main: #f9fafb;
+  --app-text-muted: #9ca3af;
+  --app-danger-soft: rgba(248, 113, 113, 0.16);
+  --radius-lg: 18px;
+  --radius-md: 12px;
+  --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.8);
+  --shadow-subtle: 0 10px 30px rgba(15, 23, 42, 0.6);
+  --transition-fast: 160ms ease-out;
+  --transition-med: 220ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+    "Segoe UI", sans-serif;
+  background: radial-gradient(circle at top left, #1f2937 0, #020617 45%);
+  color: var(--app-text-main);
+}
+
+.AppRoot {
+  min-height: 100vh;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  padding: 32px 16px;
+  box-sizing: border-box;
+}
+
+.AppShell {
+  width: 100%;
+  max-width: 1120px;
+  background: linear-gradient(145deg, #020617, #020617 62%, #050816);
+  border-radius: 28px;
+  border: 1px solid rgba(148, 163, 184, 0.20);
+  box-shadow: var(--shadow-soft);
+  padding: 28px 28px 24px;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.25fr);
+  gap: 24px;
+}
+
+@media (max-width: 900px) {
+  .AppShell {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.AppHeroTitle {
+  font-size: 32px;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  margin: 0 0 10px;
+}
+
+.AppHeroHighlight {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  background: var(--app-accent-soft);
+  border: 1px solid rgba(124, 92, 255, 0.5);
+  color: #e5e7eb;
+  margin-bottom: 14px;
+  gap: 6px;
+}
+
+.AppHeroBody {
+  font-size: 14px;
+  color: var(--app-text-muted);
+  margin: 0 0 16px;
+}
+
+.AppHeroList {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 18px;
+  font-size: 13px;
+  color: var(--app-text-muted);
+}
+
+.AppHeroList li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.AppHeroBadgeRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.AppHeroBadge {
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  padding: 4px 9px;
+  font-size: 11px;
+  color: var(--app-text-muted);
+}
+
+.Card {
+  background: radial-gradient(circle at top, #020617, #020617 50%, #020617);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--app-border-subtle);
+  box-shadow: var(--shadow-subtle);
+  padding: 18px 18px 16px;
+  box-sizing: border-box;
+}
+
+.CardTitleRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.CardTitle {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.CardKicker {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--app-text-muted);
+}
+
+.CardSub {
+  font-size: 12px;
+  color: var(--app-text-muted);
+  margin-bottom: 14px;
+}
+
+.FormGrid {
+  display: grid;
+  gap: 10px;
+}
+
+.FieldLabel {
+  display: block;
+  font-size: 12px;
+  margin-bottom: 4px;
+  color: #e5e7eb;
+}
+
+.FieldHelp {
+  margin-top: 4px;
+  font-size: 11px;
+  color: var(--app-text-muted);
+}
+
+.TextInput,
+.SelectTrigger,
+.FileInput {
+  width: 100%;
+  font-size: 13px;
+  padding: 7px 9px;
+  border-radius: 10px;
+  border: 1px solid rgba(148, 163, 184, 0.55);
+  background: #020617;
+  color: var(--app-text-main);
+  box-sizing: border-box;
+}
+
+.TextInput:focus,
+.SelectTrigger:focus-visible,
+.FileInput:focus {
+  outline: 2px solid var(--app-accent);
+  outline-offset: 1px;
+  border-color: transparent;
+}
+
+.PrimaryButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: none;
+  background: linear-gradient(135deg, var(--app-accent), #22c55e);
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(46, 144, 255, 0.40);
+  transition: transform var(--transition-fast),
+    box-shadow var(--transition-fast), filter var(--transition-fast);
+}
+
+.PrimaryButton:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+}
+
+.PrimaryButton:disabled {
+  opacity: 0.7;
+  cursor: default;
+  box-shadow: none;
+}
+
+.SecondaryPill {
+  padding: 5px 9px;
+  border-radius: 999px;
+  font-size: 11px;
+  border: 1px dashed rgba(148, 163, 184, 0.45);
+  color: var(--app-text-muted);
+}
+
+.TabsRoot {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.TabsList {
+  display: inline-flex;
+  padding: 3px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(148, 163, 184, 0.45);
+  gap: 4px;
+}
+
+.TabsTrigger {
+  flex: 1;
+  border-radius: 999px;
+  padding: 5px 10px;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border: none;
+  background: transparent;
+  color: var(--app-text-muted);
+  cursor: pointer;
+  transition: background var(--transition-med), color var(--transition-med),
+    transform var(--transition-med);
+}
+
+.TabsTrigger[data-state="active"] {
+  background: var(--app-accent-soft);
+  color: #f9fafb;
+  transform: translateY(-1px);
+}
+
+.TabsContent {
+  margin-top: 2px;
+}
+
+.RadioRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.RadioChip {
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.7);
+  padding: 5px 10px;
+  font-size: 11px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: background var(--transition-fast),
+    border-color var(--transition-fast), transform var(--transition-fast);
+}
+
+.RadioChip[data-state="checked"] {
+  background: var(--app-accent-soft);
+  border-color: var(--app-accent);
+  transform: translateY(-1px);
+}
+
+.RadioDot {
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  border: 1.5px solid rgba(148, 163, 184, 0.9);
+  box-sizing: border-box;
+}
+
+.RadioDotInner {
+  width: 5px;
+  height: 5px;
+  border-radius: 999px;
+  background: var(--app-accent);
+}
+
+.ResultPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ResultBadgeRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.TierTag {
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 11px;
+  background: rgba(34, 197, 94, 0.08);
+  border: 1px solid rgba(34, 197, 94, 0.4);
+  color: #bbf7d0;
+}
+
+.TierTag--neutral {
+  background: rgba(59, 130, 246, 0.08);
+  border-color: rgba(59, 130, 246, 0.4);
+  color: #bfdbfe;
+}
+
+.TierTag--soft {
+  background: rgba(248, 250, 252, 0.03);
+  border-color: rgba(148, 163, 184, 0.5);
+  color: var(--app-text-muted);
+}
+
+.ResultSectionTitle {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--app-text-muted);
+}
+
+.ResultList {
+  margin: 4px 0 0;
+  padding-left: 16px;
+  font-size: 13px;
+  color: #e5e7eb;
+}
+
+.ResultEmpty {
+  font-size: 12px;
+  color: var(--app-text-muted);
+}
+
+.LoadingRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--app-text-muted);
+}
+
+.LoadingDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--app-accent);
+  animation: pulseDot 1s infinite ease-in-out alternate;
+}
+
+.LoadingDot:nth-child(2) {
+  animation-delay: 0.12s;
+}
+
+.LoadingDot:nth-child(3) {
+  animation-delay: 0.24s;
+}
+
+@keyframes pulseDot {
+  from {
+    transform: translateY(0);
+    opacity: 0.6;
+  }
+  to {
+    transform: translateY(-3px);
+    opacity: 1;
+  }
+}
+
+
