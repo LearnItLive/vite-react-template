@@ -121,8 +121,6 @@ app.post("/api/analyze", async (c) => {
       "Populate each array with 3-6 concise bullets. Keep the tone supportive and actionable.",
     ].join(" ");
 
-    const input = { image: bytes, prompt, max_tokens: maxTokens };
-
     const ai: any = (c.env as any).AI ?? (c.env as any).ai_image_binding;
     if (!ai || typeof ai.run !== "function") {
       return c.json(
@@ -130,13 +128,57 @@ app.post("/api/analyze", async (c) => {
         500,
       );
     }
+    // Prefer Llama 3.2 Vision with messages format; fallback to LLaVA if unavailable
+    let response: any;
+    try {
+      const visionInput = {
+        messages: [
+          {
+            role: "user",
+            content: [
+              { type: "input_text", text: prompt },
+              { type: "input_image", image: bytes },
+            ],
+          },
+        ],
+        max_tokens: maxTokens,
+      };
+      response = await ai.run(
+        "@cf/meta/llama-3.2-11b-vision-instruct",
+        visionInput,
+      );
+    } catch (e) {
+      console.error("Primary model failed, falling back to llava:", e);
+      const fallbackInput = { image: bytes, prompt, max_tokens: maxTokens };
+      response = await ai.run("@cf/llava-hf/llava-1.5-7b-hf", fallbackInput);
+    }
 
-    const response = await ai.run(
-      "@cf/meta/llama-3.2-11b-vision-instruct",
-      input,
-    );
+    // If the model returned JSON as a string, parse and return the object
+    const tryParse = (val: unknown) => {
+      if (typeof val !== "string") return null;
+      try {
+        return JSON.parse(val);
+      } catch {
+        return null;
+      }
+    };
+    let payload: any = response;
+    if (response && typeof response === "object") {
+      const candidates = [
+        (response as any).output,
+        (response as any).response,
+        (response as any).description,
+      ];
+      for (const cnd of candidates) {
+        const parsed = tryParse(cnd as any);
+        if (parsed && parsed.overallTier && parsed.summary) {
+          payload = parsed;
+          break;
+        }
+      }
+    }
 
-    return c.json(response);
+    return c.json(payload);
   } catch (err) {
     console.error("Analyze error:", err);
     return c.json({ error: "Failed to analyze image" }, 500);
