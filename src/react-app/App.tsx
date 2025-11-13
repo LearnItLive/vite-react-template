@@ -1,6 +1,10 @@
 // src/App.tsx
 
 import { useState } from "react";
+import * as Label from "@radix-ui/react-label";
+import * as RadioGroup from "@radix-ui/react-radio-group";
+import * as Select from "@radix-ui/react-select";
+import * as Checkbox from "@radix-ui/react-checkbox";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import cloudflareLogo from "./assets/Cloudflare_Logo.svg";
@@ -127,106 +131,139 @@ function App() {
       </div>
       <div className="card">
         <h2>Image Feedback (Workers AI)</h2>
-        <div style={{ marginBottom: 8 }}>
-          <label style={{ marginRight: 8 }}>Photo type:</label>
-          <label style={{ marginRight: 8 }}>
-            <input
-              type="radio"
-              name="photoType"
-              value="face"
-              checked={photoType === "face"}
-              onChange={() => setPhotoType("face")}
-            />{" "}
-            Face
-          </label>
-          <label>
-            <input
-              type="radio"
-              name="photoType"
-              value="full"
-              checked={photoType === "full"}
-              onChange={() => setPhotoType("full")}
-            />{" "}
-            Full body
-          </label>
+        <div style={{ marginBottom: 8, textAlign: "left" }}>
+          <Label.Root htmlFor="photoType"><strong>Photo type</strong></Label.Root>
+          <RadioGroup.Root
+            id="photoType"
+            value={photoType}
+            onValueChange={(v) => setPhotoType(v as typeof photoType)}
+            style={{ display: "flex", gap: 12, marginTop: 6 }}
+          >
+            <div style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
+              <RadioGroup.Item
+                value="face"
+                aria-label="Face"
+                className="rg-item"
+              />
+              <Label.Root onClick={() => setPhotoType("face")}>Face</Label.Root>
+            </div>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
+              <RadioGroup.Item
+                value="full"
+                aria-label="Full body"
+                className="rg-item"
+              />
+              <Label.Root onClick={() => setPhotoType("full")}>Full body</Label.Root>
+            </div>
+          </RadioGroup.Root>
         </div>
-        <div style={{ marginBottom: 8 }}>
-          <label style={{ marginRight: 8 }}>
-            Age group:
-            <select
-              value={ageGroup}
-              onChange={(e) =>
-                setAgeGroup(e.target.value as typeof ageGroup)
-              }
-              style={{ marginLeft: 6 }}
-            >
-              <option value="unspecified">Prefer not to say</option>
-              <option value="13-17">13-17</option>
-              <option value="18-24">18-24</option>
-              <option value="25-34">25-34</option>
-              <option value="35-49">35-49</option>
-              <option value="50+">50+</option>
-            </select>
-          </label>
-          <label style={{ marginLeft: 12 }}>
-            Gender:
-            <select
-              value={gender}
-              onChange={(e) => setGender(e.target.value as typeof gender)}
-              style={{ marginLeft: 6 }}
-            >
-              <option value="unspecified">Prefer not to say</option>
-              <option value="female">Female</option>
-              <option value="male">Male</option>
-              <option value="non-binary">Non-binary / Other</option>
-            </select>
-          </label>
+        <div style={{ marginBottom: 8, textAlign: "left", display: "flex", gap: 12, flexWrap: "wrap" }}>
+          <div>
+            <Label.Root><strong>Age group</strong></Label.Root>
+            <Select.Root value={ageGroup} onValueChange={(v) => setAgeGroup(v as typeof ageGroup)}>
+              <Select.Trigger className="select-trigger" aria-label="Age group">
+                <Select.Value />
+              </Select.Trigger>
+              <Select.Portal>
+                <Select.Content className="select-content">
+                  <Select.Viewport>
+                    <Select.Item value="unspecified" className="select-item"><Select.ItemText>Prefer not to say</Select.ItemText></Select.Item>
+                    <Select.Item value="13-17" className="select-item"><Select.ItemText>13-17</Select.ItemText></Select.Item>
+                    <Select.Item value="18-24" className="select-item"><Select.ItemText>18-24</Select.ItemText></Select.Item>
+                    <Select.Item value="25-34" className="select-item"><Select.ItemText>25-34</Select.ItemText></Select.Item>
+                    <Select.Item value="35-49" className="select-item"><Select.ItemText>35-49</Select.ItemText></Select.Item>
+                    <Select.Item value="50+" className="select-item"><Select.ItemText>50+</Select.ItemText></Select.Item>
+                  </Select.Viewport>
+                </Select.Content>
+              </Select.Portal>
+            </Select.Root>
+          </div>
+          <div>
+            <Label.Root><strong>Gender</strong></Label.Root>
+            <Select.Root value={gender} onValueChange={(v) => setGender(v as typeof gender)}>
+              <Select.Trigger className="select-trigger" aria-label="Gender">
+                <Select.Value />
+              </Select.Trigger>
+              <Select.Portal>
+                <Select.Content className="select-content">
+                  <Select.Viewport>
+                    <Select.Item value="unspecified" className="select-item"><Select.ItemText>Prefer not to say</Select.ItemText></Select.Item>
+                    <Select.Item value="female" className="select-item"><Select.ItemText>Female</Select.ItemText></Select.Item>
+                    <Select.Item value="male" className="select-item"><Select.ItemText>Male</Select.ItemText></Select.Item>
+                    <Select.Item value="non-binary" className="select-item"><Select.ItemText>Non-binary / Other</Select.ItemText></Select.Item>
+                  </Select.Viewport>
+                </Select.Content>
+              </Select.Portal>
+            </Select.Root>
+          </div>
         </div>
         <div style={{ marginBottom: 8, textAlign: "left" }}>
           <div style={{ marginBottom: 6 }}><strong>Focus areas</strong></div>
           {["posture", "expression", "grooming", "outfit", "lighting"].map(
             (k) => (
-              <label key={k} style={{ marginRight: 12 }}>
-                <input
-                  type="checkbox"
+              <span key={k} style={{ marginRight: 12, display: "inline-flex", alignItems: "center", gap: 6 }}>
+                <Checkbox.Root
                   checked={focusAreas.includes(k)}
-                  onChange={(e) => {
-                    const checked = e.target.checked;
+                  onCheckedChange={(checked) => {
                     setFocusAreas((prev) => {
-                      if (checked) return Array.from(new Set([...prev, k]));
+                      if (checked === true) return Array.from(new Set([...prev, k]));
                       return prev.filter((x) => x !== k);
                     });
                   }}
-                />{" "}
-                {k}
-              </label>
+                  className="cb-root"
+                  aria-label={k}
+                >
+                  <Checkbox.Indicator />
+                </Checkbox.Root>
+                <Label.Root
+                  onClick={() =>
+                    setFocusAreas((prev) =>
+                      prev.includes(k)
+                        ? prev.filter((x) => x !== k)
+                        : [...prev, k],
+                    )
+                  }
+                >
+                  {k}
+                </Label.Root>
+              </span>
             ),
           )}
         </div>
-        <div style={{ marginBottom: 8 }}>
-          <label style={{ marginRight: 12 }}>
-            Tone:
-            <select
-              value={tone}
-              onChange={(e) => setTone(e.target.value as typeof tone)}
-              style={{ marginLeft: 6 }}
-            >
-              <option value="friendly">Friendly & supportive</option>
-              <option value="neutral">Neutral & concise</option>
-            </select>
-          </label>
-          <label>
-            Length:
-            <select
-              value={length}
-              onChange={(e) => setLength(e.target.value as typeof length)}
-              style={{ marginLeft: 6 }}
-            >
-              <option value="short">Short</option>
-              <option value="medium">Medium</option>
-              <option value="detailed">Detailed</option>
-            </select>
-          </label>
+        <div style={{ marginBottom: 8, display: "flex", gap: 12, flexWrap: "wrap" }}>
+          <div>
+            <Label.Root><strong>Tone</strong></Label.Root>
+            <Select.Root value={tone} onValueChange={(v) => setTone(v as typeof tone)}>
+              <Select.Trigger className="select-trigger" aria-label="Tone">
+                <Select.Value />
+              </Select.Trigger>
+              <Select.Portal>
+                <Select.Content className="select-content">
+                  <Select.Viewport>
+                    <Select.Item value="friendly" className="select-item"><Select.ItemText>Friendly & supportive</Select.ItemText></Select.Item>
+                    <Select.Item value="neutral" className="select-item"><Select.ItemText>Neutral & concise</Select.ItemText></Select.Item>
+                  </Select.Viewport>
+                </Select.Content>
+              </Select.Portal>
+            </Select.Root>
+          </div>
+          <div>
+            <Label.Root><strong>Length</strong></Label.Root>
+            <Select.Root value={length} onValueChange={(v) => setLength(v as typeof length)}>
+              <Select.Trigger className="select-trigger" aria-label="Length">
+                <Select.Value />
+              </Select.Trigger>
+              <Select.Portal>
+                <Select.Content className="select-content">
+                  <Select.Viewport>
+                    <Select.Item value="short" className="select-item"><Select.ItemText>Short</Select.ItemText></Select.Item>
+                    <Select.Item value="medium" className="select-item"><Select.ItemText>Medium</Select.ItemText></Select.Item>
+                    <Select.Item value="detailed" className="select-item"><Select.ItemText>Detailed</Select.ItemText></Select.Item>
+                  </Select.Viewport>
+                </Select.Content>
+              </Select.Portal>
+            </Select.Root>
+          </div>
         </div>
         <div style={{ marginBottom: 8 }}>
           <input
@@ -254,16 +291,19 @@ function App() {
             />
           </div>
         )}
-        <div style={{ marginBottom: 8, textAlign: "left", fontSize: 12 }}>
-          <label>
-            <input
-              type="checkbox"
-              checked={consent}
-              onChange={(e) => setConsent(e.target.checked)}
-            />{" "}
+        <div style={{ marginBottom: 8, textAlign: "left", fontSize: 12, display: "flex", alignItems: "center", gap: 8 }}>
+          <Checkbox.Root
+            checked={consent}
+            onCheckedChange={(v) => setConsent(v === true)}
+            className="cb-root"
+            aria-label="consent"
+          >
+            <Checkbox.Indicator />
+          </Checkbox.Root>
+          <Label.Root onClick={() => setConsent((v) => !v)}>
             I understand this is AI-generated guidance for general appearance
             only — not health, medical, or professional advice.
-          </label>
+          </Label.Root>
         </div>
         <div style={{ marginTop: 12 }}>
           <button onClick={handleAnalyze} disabled={loading || !selectedFile}>

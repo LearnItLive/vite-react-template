@@ -43,3 +43,46 @@
 .read-the-docs {
   color: #888;
 }
+
+/* Minimal styles for Radix primitives */
+.select-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 180px;
+  padding: 8px 10px;
+  border: 1px solid #3a3a3a;
+  border-radius: 6px;
+  background-color: #1a1a1a;
+}
+.select-content {
+  background-color: #1f1f1f;
+  border: 1px solid #3a3a3a;
+  border-radius: 8px;
+  padding: 4px;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.3);
+}
+.select-item {
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.select-item:hover {
+  background-color: #2a2a2a;
+}
+.rg-item {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid #646cff;
+}
+.cb-root {
+  width: 16px;
+  height: 16px;
+  border: 2px solid #646cff;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+}
