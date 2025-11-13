@@ -17,6 +17,16 @@ interface AnalysisResult {
   strengths: AnalysisSection;
   gentleSuggestions: AnalysisSection;
   styleIdeas: AnalysisSection;
+  suitability?: {
+    rating: number;
+    verdict: "use" | "consider" | "avoid";
+    reasons: string[];
+  };
+  archetypes?: {
+    styleArchetypes: string[];
+    characterVibes: string[];
+  };
+  disclaimer?: string;
 }
 
 const initialResult: AnalysisResult | null = null;
@@ -38,15 +48,7 @@ const App: React.FC = () => {
   };
 
   const coerceResult = (json: any): AnalysisResult => {
-    if (
-      json &&
-      json.overallTier &&
-      json.tierLabel &&
-      json.summary &&
-      json.strengths &&
-      json.gentleSuggestions &&
-      json.styleIdeas
-    ) {
+    if (json && json.overallTier && json.tierLabel && json.summary && json.strengths && json.gentleSuggestions && json.styleIdeas) {
       return json as AnalysisResult;
     }
     const text =
@@ -311,14 +313,55 @@ const ResultsView: React.FC<ResultsViewProps> = ({ result, mode }) => {
         <span className={tierClass}>
           Tier {result.overallTier}: {result.tierLabel}
         </span>
+        {typeof result.suitability?.rating === "number" && (
+          <span className="TierTag" style={{ marginLeft: 8 }}>
+            Dating suitability: {result.suitability.rating}/10 {renderVerdict(result.suitability.verdict)}
+          </span>
+        )}
       </div>
       <p className="CardSub" style={{ marginTop: 6 }}>
         {result.summary}
       </p>
 
+      {result.suitability?.reasons?.length ? (
+        <div>
+          <div className="ResultSectionTitle">Why this rating</div>
+          <ul className="ResultList">
+            {result.suitability.reasons.map((r) => (
+              <li key={r}>{r}</li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
+
       <ResultSection section={result.strengths} />
       <ResultSection section={result.gentleSuggestions} />
       <ResultSection section={result.styleIdeas} />
+
+      {result.archetypes &&
+        (result.archetypes.styleArchetypes?.length ||
+          result.archetypes.characterVibes?.length) ? (
+        <div>
+          <div className="ResultSectionTitle">Non-identifying archetypes</div>
+          <ul className="ResultList">
+            {(result.archetypes.styleArchetypes || []).map((a) => (
+              <li key={`style-${a}`}>{a}</li>
+            ))}
+            {(result.archetypes.characterVibes || []).map((v) => (
+              <li key={`vibe-${v}`}>{v}</li>
+            ))}
+          </ul>
+          <p className="FieldHelp" style={{ marginTop: 6 }}>
+            These are broad style vibes for inspiration, not comparisons to specific people.
+          </p>
+        </div>
+      ) : null}
+
+      {result.disclaimer ? (
+        <p className="FieldHelp" style={{ marginTop: 10 }}>
+          {result.disclaimer}
+        </p>
+      ) : null}
     </div>
   );
 };
@@ -341,5 +384,12 @@ const ResultSection: React.FC<ResultSectionProps> = ({ section }) => {
     </div>
   );
 };
+
+function renderVerdict(verdict?: "use" | "consider" | "avoid") {
+  if (!verdict) return null;
+  if (verdict === "use") return "— great as a main photo";
+  if (verdict === "consider") return "— solid secondary photo";
+  return "— try a different shot";
+}
 
 

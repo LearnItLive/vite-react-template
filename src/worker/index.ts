@@ -71,7 +71,7 @@ app.post("/api/analyze", async (c) => {
     const rules = [
       "Be kind and constructive; avoid negative or judgmental language.",
       "Do not guess or infer race, ethnicity, health conditions, disabilities, or socioeconomic status.",
-      "Avoid commenting on weight or body size; emphasize posture, presence, grooming, clothing fit, color harmony, and confidence.",
+      "When discussing body composition, be gentle and non-judgmental. Focus on how clothing fit, posture, and fitness can affect silhouette and impression. Do not give medical advice.",
       "No medical, legal, or professional advice; general appearance guidance only.",
       "Keep language gender-inclusive and stereotype-free. If gender is unspecified or non-binary, keep feedback gender-neutral.",
       "Offer practical, respectful tips the user can try today.",
@@ -96,7 +96,29 @@ app.post("/api/analyze", async (c) => {
       focusText,
       toneDirective,
       rules,
-      "Provide concise, constructive feedback in 1-2 short paragraphs with 1 actionable next step.",
+      "Task: Evaluate whether this photo is suitable for a dating profile, rate it from 1-10, and provide concrete, kind feedback on hair, grooming, clothing, posture/expression, and lighting/background.",
+      "Important constraints: Do NOT identify real people or compare the subject to specific celebrities. If offering 'vibes' or 'archetypes', keep them non-identifying (e.g., 'clean-cut leading', 'outdoorsy adventurer', 'artsy indie').",
+      "If image quality (blurriness, low light, heavy filters) or composition (cropping, cluttered background) affects suitability, mention that briefly.",
+      "Output format: Return ONLY a valid JSON object (no markdown, no extra commentary) matching this exact schema:",
+      `{
+        "overallTier": "A" | "B" | "C",
+        "tierLabel": string,
+        "summary": string,
+        "strengths": { "title": "Strengths", "items": string[] },
+        "gentleSuggestions": { "title": "Gentle suggestions", "items": string[] },
+        "styleIdeas": { "title": "Style ideas", "items": string[] },
+        "suitability": {
+          "rating": number,
+          "verdict": "use" | "consider" | "avoid",
+          "reasons": string[]
+        },
+        "archetypes": {
+          "styleArchetypes": string[],
+          "characterVibes": string[]
+        },
+        "disclaimer": string
+      }`,
+      "Populate each array with 3-6 concise bullets. Keep the tone supportive and actionable.",
     ].join(" ");
 
     const input = { image: bytes, prompt, max_tokens: maxTokens };
@@ -110,7 +132,7 @@ app.post("/api/analyze", async (c) => {
     }
 
     const response = await ai.run(
-      "@cf/unum/uform-gen2-qwen-500m",
+      "@cf/meta/llama-3.2-11b-vision-instruct",
       input,
     );
 
